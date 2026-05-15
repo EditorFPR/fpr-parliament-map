@@ -18,6 +18,7 @@
     --sodelpa: #1A6B3A;
     --people-first: #4A2C6B;
     --gov-ind: #4A7A6B;
+    --bloc16: #8B5E3C;
   }
   * { margin:0; padding:0; box-sizing:border-box; }
   body { font-family:'Source Sans 3',sans-serif; background:var(--warm-white); color:var(--chinese-black); }
@@ -35,14 +36,17 @@
 
   .main { max-width:1200px; margin:0 auto; padding:1.5rem 2rem; display:grid; grid-template-columns:1fr 380px; gap:2rem; align-items:start; }
 
+  /* LEFT: hemicycle + legend */
   .map-section {}
 
+  /* LEGEND */
   .legend { display:flex; gap:1rem; flex-wrap:wrap; margin-bottom:1rem; }
   .legend-item { display:flex; align-items:center; gap:0.4rem; font-size:0.75rem; color:var(--mid-grey); cursor:pointer; padding:0.3rem 0.6rem; border:1px solid var(--light-grey); border-radius:2px; transition:all 0.15s; }
   .legend-item:hover { border-color:var(--chinese-black); }
   .legend-item.active { border-color:var(--chinese-black); background:var(--chinese-black); color:var(--warm-white); }
   .legend-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
 
+  /* HEMICYCLE */
   .hemicycle-wrap { background:white; border:1px solid var(--light-grey); border-radius:4px; padding:1rem; }
   .hemicycle-wrap svg { width:100%; height:auto; display:block; }
 
@@ -53,11 +57,13 @@
 
   .speaker-label { font-family:'Source Sans 3',sans-serif; }
 
+  /* SEAT COUNTS */
   .seat-counts { display:flex; gap:0; margin-top:0.5rem; border:1px solid var(--light-grey); border-radius:3px; overflow:hidden; }
   .count-block { flex:1; padding:0.5rem 0.4rem; text-align:center; }
   .count-num { font-family:'Libre Baskerville',serif; font-size:1.1rem; font-weight:700; display:block; }
   .count-label { font-size:0.6rem; text-transform:uppercase; letter-spacing:0.05em; color:#888; display:block; margin-top:0.1rem; }
 
+  /* RIGHT: profile panel */
   .profile-panel { position:sticky; top:1rem; }
 
   .panel-placeholder { background:white; border:1px solid var(--light-grey); border-radius:4px; padding:2rem; text-align:center; color:var(--mid-grey); }
@@ -97,6 +103,7 @@
 
   .profile-footer { margin-top:1rem; padding-top:0.75rem; border-top:1px solid var(--light-grey); font-size:0.65rem; color:var(--mid-grey); font-style:italic; display:flex; justify-content:space-between; }
 
+  /* Filters */
   .filter-row { display:flex; gap:0.4rem; margin-bottom:1rem; flex-wrap:wrap; }
   .filter-btn { padding:0.35rem 0.8rem; border:2px solid transparent; background:transparent; font-family:'Source Sans 3',sans-serif; font-size:0.7rem; letter-spacing:0.04em; text-transform:uppercase; cursor:pointer; border-radius:2px; transition:all 0.2s; }
   .filter-btn:hover { opacity:0.8; }
@@ -113,6 +120,8 @@
   .filter-btn[data-party="people-first"].active { background:var(--people-first); }
   .filter-btn[data-party="gov-ind"] { border-color:var(--gov-ind); color:var(--gov-ind); }
   .filter-btn[data-party="gov-ind"].active { background:var(--gov-ind); }
+  .filter-btn[data-party="bloc16"] { border-color:var(--bloc16); color:var(--bloc16); }
+  .filter-btn[data-party="bloc16"].active { background:var(--bloc16); }
 
   footer { background:var(--chinese-black); padding:1.5rem 2rem; margin-top:3rem; }
   .footer-inner { max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; }
@@ -153,23 +162,33 @@
       <button class="filter-btn" data-party="sodelpa" onclick="filterSeats('sodelpa',this)">SODELPA</button>
       <button class="filter-btn" data-party="people-first" onclick="filterSeats('people-first',this)">People First</button>
       <button class="filter-btn" data-party="gov-ind" onclick="filterSeats('gov-ind',this)">Gov. Aligned</button>
+      <button class="filter-btn" data-party="bloc16" onclick="filterSeats('bloc16',this)">Bloc 16</button>
     </div>
 
     <div class="legend">
       <div class="legend-item" onclick="filterSeats('pa',this)"><span class="legend-dot" style="background:var(--pa)"></span>People's Alliance (21)</div>
       <div class="legend-item" onclick="filterSeats('nfp',this)"><span class="legend-dot" style="background:var(--nfp)"></span>NFP (5)</div>
       <div class="legend-item" onclick="filterSeats('sodelpa',this)"><span class="legend-dot" style="background:var(--sodelpa)"></span>SODELPA (3)</div>
-      <div class="legend-item" onclick="filterSeats('gov-ind',this)"><span class="legend-dot" style="background:var(--gov-ind)"></span>Gov. Aligned Ind. (11)</div>
-      <div class="legend-item" onclick="filterSeats('people-first',this)"><span class="legend-dot" style="background:var(--people-first)"></span>People First / Opp. (15)</div>
+      <div class="legend-item" onclick="filterSeats('gov-ind',this)"><span class="legend-dot" style="background:var(--gov-ind)"></span>Gov. Aligned Ind. (6)</div>
+      <div class="legend-item" onclick="filterSeats('bloc16',this)"><span class="legend-dot" style="background:var(--bloc16)"></span>Bloc 16 — Cross-bench (4)</div>
+      <div class="legend-item" onclick="filterSeats('people-first',this)"><span class="legend-dot" style="background:var(--people-first)"></span>People First / Opp. (20)</div>
     </div>
 
     <div class="hemicycle-wrap">
       <svg id="parliament-svg" viewBox="0 0 800 440" xmlns="http://www.w3.org/2000/svg">
+        <!-- Background arc -->
         <path d="M 60,400 A 340,340 0 0,1 740,400" fill="none" stroke="#E8E4DF" stroke-width="1"/>
+
+        <!-- Speaker label -->
         <text x="400" y="428" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="11" fill="#A0A09E" letter-spacing="2">SPEAKER</text>
         <line x1="340" y1="420" x2="460" y2="420" stroke="#E8E4DF" stroke-width="1"/>
+
+        <!-- Government label -->
         <text x="100" y="60" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="10" fill="#A0A09E" letter-spacing="1">GOVERNMENT →</text>
+        <!-- Opposition label -->
         <text x="700" y="60" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="10" fill="#A0A09E" letter-spacing="1">← OPPOSITION</text>
+
+        <!-- Seats rendered by JS -->
         <g id="seats-group"></g>
       </svg>
     </div>
@@ -188,11 +207,11 @@
         <span class="count-label">SODELPA</span>
       </div>
       <div class="count-block" style="background:rgba(74,122,107,0.08); border-right:1px solid var(--light-grey)">
-        <span class="count-num" style="color:var(--gov-ind)">11</span>
+        <span class="count-num" style="color:var(--gov-ind)">6</span>
         <span class="count-label">Gov. Aligned</span>
       </div>
       <div class="count-block" style="background:rgba(74,44,107,0.08)">
-        <span class="count-num" style="color:var(--people-first)">15</span>
+        <span class="count-num" style="color:var(--people-first)">20</span>
         <span class="count-label">People First/Opp.</span>
       </div>
     </div>
@@ -234,7 +253,7 @@
 <footer>
   <div class="footer-inner">
     <div class="footer-brand">Fiji Political Review — Parliament Map</div>
-    <div class="footer-note">Seat composition reflects 2022 election results adjusted for FijiFirst deregistration July 2024, parliamentary realignments, and government-aligned independents. Updated May 2026.</div>
+    <div class="footer-note">Seat composition reflects 2022 election results adjusted for FijiFirst deregistration July 2024, parliamentary suspensions, and government-aligned independents. Updated May 2026.</div>
   </div>
 </footer>
 
@@ -244,7 +263,8 @@ const colors = {
   'nfp': '#8B1A1A',
   'sodelpa': '#1A6B3A',
   'people-first': '#4A2C6B',
-  'gov-ind': '#4A7A6B'
+  'gov-ind': '#4A7A6B',
+  'bloc16': '#8B5E3C'
 };
 
 const partyNames = {
@@ -252,12 +272,13 @@ const partyNames = {
   'nfp': 'National Federation Party',
   'sodelpa': 'SODELPA',
   'people-first': 'People First',
-  'gov-ind': 'Gov. Aligned Independent'
+  'gov-ind': 'Gov. Aligned Independent',
+  'bloc16': 'Bloc 16 — Cross-bench'
 };
 
+// All 55 MPs — left to right = government to opposition
 const mps = [
-
-  // ── PEOPLE'S ALLIANCE (21) ───────────────────────────────────────────────────
+  // PEOPLE'S ALLIANCE (21) — leftmost
   { name:'Sitiveni Rabuka', party:'pa', role:'Prime Minister', initials:'SR', votes2022: 77748, badges:['badge-pm'], fields:[{l:'Party role',v:'PA Leader; Founder'},{l:'Career',v:'PM 1992–99; led 1987 coups; PM 2022–present'},{l:'CRC',v:'Committed to reform before next election'}], verified:true },
   { name:'Lynda Tabuya', party:'pa', role:'Minister for Information, Environment and Climate Change', initials:'LT', votes2022: 11965, badges:['badge-minister'], fields:[{l:'Career',v:'Former SODELPA MP; Deputy Leader PA; Minister for Women 2022–24; dismissed December 2024; reinstated January 2026 with expanded portfolio of Information, Environment and Climate Change'},{l:'Vuda',v:'As Environment Minister, confirmed no decision made yet on TNG Waste-to-Energy proposal at Vuda — connecting directly to FPR reporting'},{l:'Climate',v:'Pacific Political Champion for Climate Finance; leading Fiji preparations for Pre-COP31 hosted in Fiji ahead of COP31 in Antalya, Turkey'}], verified:true },
   { name:'Siromi Turaga', party:'pa', role:'Minister for Justice; Acting AG', initials:'ST', votes2022: 2860, badges:['badge-minister'], fields:[{l:'Career',v:'Tabled Referendum Bill December 2025; moved PRF ratification April 2026'},{l:'CRC',v:'"We have to deliver"'}], verified:true },
@@ -270,9 +291,9 @@ const mps = [
   { name:'Maciu Katamotu Nalumisa', party:'pa', role:'Minister for Housing and Local Government', initials:'MN', votes2022: 2400, badges:['badge-minister'], fields:[{l:'Career',v:"People's Alliance; Minister 2022–present"}], verified:true },
   { name:'Tomasi Tunabuna', party:'pa', role:'Minister for Agriculture, Waterways and Sugar', initials:'TT', votes2022: 2002, badges:['badge-minister'], fields:[{l:'Career',v:"People's Alliance; Minister 2022–present"}], verified:true },
   { name:'Jese Saukuru', party:'pa', role:'MP; former Minister for Youth and Sports', initials:'JS', votes2022: 2759, badges:['badge-incumbent'], fields:[{l:'Career',v:"People's Alliance; Minister for Youth and Sports 2022–March 2026"},{l:'Notable',v:'Dismissed by PM Rabuka 7 March 2026 following allegations of abuse of office relating to the Fiji Sports Council — specifically travel in business class with his wife to New Zealand under a Fiji Airways contra deal without board approval. Offered to repay wife\'s travel costs. Remains MP.'},{l:'Legal',v:'Police received official complaint of alleged misuse of funds March 2026. Investigation ongoing. PM Rabuka temporarily assumed the Youth and Sports portfolio.'}], verified:true },
-  { name:'Alitia Cirikiyasawa', party:'pa', role:'Minister for Fisheries and Forestry', initials:'AC', votes2022: 1649, badges:['badge-minister'], fields:[{l:'Career',v:"People's Alliance; Minister 2022–present; name updated from Bainivalu to Cirikiyasawa (married name) per parliament.gov.fj"}], verified:true },
+  { name:'Alitia Bainivalu', party:'pa', role:'Minister for Fisheries and Forestry', initials:'AB', votes2022: 1649, badges:['badge-minister'], fields:[{l:'Career',v:"People's Alliance; Minister 2022–present"}], verified:true },
   { name:'Esrom Immanuel', party:'pa', role:'Minister for Finance, Commerce & Business Development', initials:'EI', votes2022: 1751, badges:['badge-minister'], fields:[{l:'Career',v:'PA; became Finance Minister after Biman Prasad resigned October 2025'}], verified:true },
-  { name:'Ratu Rakuita Vakalalabure', party:'pa', role:'Assistant Minister for Home Affairs', initials:'RV', votes2022: 2460, badges:['badge-aminister'], fields:[{l:'Career',v:"People's Alliance; Assistant Minister for Home Affairs 2022–present"}], verified:true },
+  { name:'Ratu Rakuita Vakalalabure', party:'pa', role:'Assistant Minister for Defence', initials:'RV', votes2022: 2460, badges:['badge-aminister'], fields:[{l:'Career',v:"People's Alliance; Assistant Minister 2022–present"}], verified:false },
   { name:'Isikeli Tuiwailevu', party:'pa', role:'Assistant Minister for iTaukei Affairs', initials:'IT', votes2022: 3061, badges:['badge-aminister'], fields:[{l:'Career',v:"People's Alliance; Assistant Minister 2022–present"}], verified:false },
   { name:'Iliesa Vanawalu', party:'pa', role:'Assistant Minister for Education', initials:'IV', votes2022: 2879, badges:['badge-aminister'], fields:[{l:'Career',v:"People's Alliance; Assistant Minister 2022–present"}], verified:false },
   { name:'Jovesa Vocea', party:'pa', role:'Assistant Minister for Rural & Maritime Development', initials:'JV', votes2022: 2363, badges:['badge-aminister'], fields:[{l:'Career',v:"People's Alliance; Assistant Minister 2022–present"}], verified:false },
@@ -280,50 +301,51 @@ const mps = [
   { name:'Inosi Turaga Kuridrani', party:'pa', role:'MP', initials:'IK', votes2022: 1553, badges:['badge-incumbent'], fields:[{l:'Career',v:'Former SODELPA MP; most recently Chairman of the Land Transport Authority; awarded People\'s Alliance seat on 11 July 2025 following the death of Vatimi Rayalu; sworn in 14 July 2025'},{l:'Note',v:'Vatimi Rayalu (the previous holder of this seat) passed away on 12 June 2025 at age 57. Parliament paid tribute. Rayalu was Minister for Agriculture and Waterways.'}], verified:true },
   { name:'Kalaveti Ravu', party:'pa', role:'MP', initials:'KR', votes2022: 1707, badges:['badge-incumbent'], fields:[{l:'Party',v:"People's Alliance"},{l:'Note',v:'Profile pending verification'}], verified:false },
 
-  // ── NATIONAL FEDERATION PARTY (5) ───────────────────────────────────────────
+  // NFP (5)
   { name:'Biman Prasad', party:'nfp', role:'NFP Leader; former Deputy PM and Finance Minister', initials:'BP', votes2022: 11355, badges:['badge-incumbent'], fields:[{l:'Education',v:'PhD Economics, USP'},{l:'Career',v:'Professor Economics USP; NFP Leader; Deputy PM 2022–25; resigned Oct 2025'},{l:'Legal',v:'Charged by FICAC — failing to declare directorships. Case before courts.'},{l:'CRC',v:'Supports constitutional reform'}], verified:true },
-  { name:'Lenora Qereqeretabua', party:'nfp', role:'Assistant Minister for Foreign Affairs; Deputy Speaker', initials:'LQ', votes2022: 3741, badges:['badge-aminister'], fields:[{l:'Career',v:'Miss Fiji 1988; broadcaster — The Pacific Way 1995–present; NFP MP 2018; Deputy Speaker 2022; Assistant Minister Foreign Affairs'},{l:'Born',v:'Dravuni, Kadavu Province'}], verified:true },
+  { name:'Lenora Qereqeretabua', party:'nfp', role:'Deputy Speaker; Assistant Minister for Foreign Affairs', initials:'LQ', votes2022: 3741, badges:['badge-aminister'], fields:[{l:'Education',v:'University of Canberra; Post Graduate Certificate in Human Resource Management, USP'},{l:'Career',v:'PR and Media Officer, Vodafone Fiji; Manager, Vodafone ATH Fiji Foundation; freelance PR consultant; broadcaster — The Pacific Way (SPC Pacific-wide current affairs programme); NFP MP 2018; re-elected 2022; Deputy Speaker elected December 2022; Assistant Minister for Foreign Affairs'},{l:'Born',v:'Dravuni, Kadavu Province'},{l:'Notable',v:'Environmental activist; advocate for Lifeline Fiji suicide prevention; Save the Children Fiji board member'}], verified:true },
   { name:'Agni Deo Singh', party:'nfp', role:'Minister for Employment, Productivity & Workplace Relations', initials:'AS', votes2022: 2308, badges:['badge-minister'], fields:[{l:'Career',v:'Former General Secretary, Fiji Teachers Union; NFP; Minister 2022–present'}], verified:true },
   { name:'Pio Tikoduadua', party:'nfp', role:'Minister for Defence and Veteran Affairs; NFP President', initials:'PT', votes2022: 2222, badges:['badge-minister'], fields:[{l:'Education',v:'UNSW; Centre for Defence & Strategic Studies Canberra; Naval Postgraduate School Monterey'},{l:'Career',v:'RFMF Lt Colonel; FijiFirst Minister 2014–15; resigned on principle; assaulted by Bainimarama in Parliament 2019; Minister 2022–present'},{l:'Notable',v:'Offered to step aside Nov 2024 — Grace Road passport investigation'}], verified:true },
   { name:'Sashi Kiran', party:'nfp', role:'Minister for Women, Children and Social Protection', initials:'SK', votes2022: 2024, badges:['badge-minister'], fields:[{l:'Career',v:'Civil society background; NFP; Assistant Minister under Lynda Tabuya 2022–24; appointed Minister for Women, Children and Social Protection December 2024 following Tabuya\'s dismissal'}], verified:true },
 
-  // ── SODELPA (3) ──────────────────────────────────────────────────────────────
-  { name:'Viliame Gavoka', party:'sodelpa', role:'Deputy PM; Minister for Tourism and Civil Aviation', initials:'VG', votes2022: 3793, badges:['badge-minister'], fields:[{l:'Career',v:'SODELPA Leader 2020; Deputy PM and Tourism Minister 2022; removed from cabinet Jan 2024; reinstated as Deputy PM and Tourism Minister'},{l:'CRC',v:'Supports GCC proposals; iTaukei rights advocate'}], verified:true },
+  // SODELPA (3)
+  { name:'Viliame Gavoka', party:'sodelpa', role:'Deputy PM; Minister for Tourism and Civil Aviation', initials:'VG', votes2022: 3793, badges:['badge-minister'], fields:[{l:'Career',v:'SODELPA Leader 2020; Deputy PM and Tourism Minister 2022; removed from cabinet Jan 2024'},{l:'CRC',v:'Supports GCC proposals; iTaukei rights advocate'}], verified:true },
   { name:'Ifereimi Vasu', party:'sodelpa', role:'Minister for iTaukei Affairs, Culture, Heritage and Arts', initials:'IV', votes2022: 1427, badges:['badge-minister'], fields:[{l:'Career',v:'RFMF Lt Colonel (ret.); Corrections Commissioner 2011–15; chaired GCC reinstatement 2023'},{l:'Legal',v:'Charged with abuse of office by FICAC 2015. Acquitted by High Court December 2019.'}], verified:true },
   { name:'Aseri Radrodro', party:'sodelpa', role:'Minister for Education; SODELPA President', initials:'AR', votes2022: 1239, badges:['badge-minister'], fields:[{l:'Career',v:'SODELPA President; Minister for Education; removed Jan 2024; reinstated as Education Minister'}], verified:true },
 
-  // ── GOVERNMENT-ALIGNED INDEPENDENTS (11) — former FijiFirst ─────────────────
+  // GOV-ALIGNED INDEPENDENTS (6) — former FijiFirst
   { name:'Ioane Naivalurua', party:'gov-ind', role:'Minister for Policing and Communications; Group of 11 Bloc leader', initials:'IN', votes2022: 1221, badges:['badge-minister'], fields:[{l:'Education',v:'Marist Brothers; Royal Military Academy Sandhurst; Australian Defence College'},{l:'Career',v:'RFMF Land Force Commander; Commissioner Fiji Police Force; Minister for Policing 2023–present'},{l:'Notable',v:'Confirmed by Speaker in March 2025 Hansard as leader of the Group of 11 Bloc — the formal grouping of former FijiFirst MPs supporting the Rabuka government from the crossbench.'}], verified:true },
   { name:'Viliame Naupoto', party:'gov-ind', role:'Minister for Immigration', initials:'VN', votes2022: 830, badges:['badge-minister'], fields:[{l:'Career',v:'Commander Fiji Navy; appointed Director Immigration by Bainimarama regime 2006 — placed travel bans on opponents; RFMF Commander 2016; Minister 2023–present'},{l:'Notable',v:'Convicted drink-driving while Navy Commander. Case file went missing from Nabua police station.'}], verified:true },
   { name:'Mosese Bulitavu', party:'gov-ind', role:'Minister for Rural and Maritime Development and Disaster Management', initials:'MB', votes2022: 631, badges:['badge-minister'], fields:[{l:'Career',v:'Former SODELPA MP 2014–22; crossed to FijiFirst 2022; remained independent after deregistration; appointed Minister for Environment December 2022; portfolio changed to Rural and Maritime Development and Disaster Management in January 2026 reshuffle; actively touring Northern and Eastern Divisions 2026'},{l:'PRF',v:'Supported PRF ratification in Parliament 30 April 2026, noting it would deliver seawalls, drainage, preparedness and coastal adaptation for Pacific communities'},{l:'Legal',v:'Sedition charge 2011 for anti-government graffiti; convicted 2018; overturned on appeal; prosecution discontinued 2019. Racist Facebook statements 2019.'}], verified:true },
-  { name:'Penioni Ravunawa', party:'gov-ind', role:'Assistant Minister for Health and Medical Services', initials:'PR', votes2022: null, badges:['badge-aminister'], fields:[{l:'Entry',v:'Sworn in February 2023 as FijiFirst replacement MP for Aiyaz Sayed-Khaiyum, who resigned from Parliament'},{l:'Career',v:'FijiFirst opposition MP 2023–2025; appointed Assistant Minister for Health in January 2025 cabinet reshuffle when PM Rabuka absorbed seven former FijiFirst independents into government'},{l:'Notable',v:'Described as "Independent Opposition member" in Fiji Times September 2024 — confirmed government-aligned only from January 2025 reshuffle'}], verified:true },
-  { name:'Shalen Kumar', party:'gov-ind', role:'Assistant Minister for Multi-Ethnic Affairs', initials:'SK', votes2022: 1088, badges:['badge-aminister'], fields:[{l:'Career',v:'Former FijiFirst MP; joined Rabuka government; Assistant Minister for Multi-Ethnic Affairs'},{l:'Notable',v:'March 2025 — voted with government on Constitution Amendment Bill motion alongside Kirpal, Sharma and Sachida Nand. Subsequently aligned with Group of 11 Bloc under Naivalurua.'}], verified:true },
-  { name:'Sachida Nand', party:'gov-ind', role:'Assistant Minister for Commerce and Business Development', initials:'SN', votes2022: 530, badges:['badge-aminister'], fields:[{l:'Career',v:'Former FijiFirst candidate 2022; entered Parliament as replacement MP following vacancies; Assistant Minister for Commerce'},{l:'Notable',v:'March 2025 — voted with government on Constitution Amendment Bill motion alongside Kirpal, Kumar and Rinesh Sharma. Subsequently formally notified the Speaker of his withdrawal of support from the Leader of the Opposition. Now formally government-aligned.'}], verified:true },
   { name:'Ratu Josaia Niudamu', party:'gov-ind', role:'Assistant Minister for Justice', initials:'JN', votes2022: 1855, badges:['badge-aminister'], fields:[{l:'Career',v:'Former FijiFirst MP; joined Rabuka government as Assistant Minister for Justice'}], verified:false },
   { name:'Aliki Bia', party:'gov-ind', role:'Assistant Minister for Youth and Sports', initials:'AB', votes2022: 753, badges:['badge-aminister'], fields:[{l:'Career',v:'Journalist; FijiFirst MP 2022; joined Rabuka government as Assistant Minister'}], verified:false },
   { name:'Naisa Tuinaceva', party:'gov-ind', role:'Assistant Minister for Public Works, Meteorological Services & Transport', initials:'NT', votes2022: 634, badges:['badge-aminister'], fields:[{l:'Career',v:'Former Land Transport Authority CEO; FijiFirst MP 2022; joined Rabuka government as Assistant Minister'}], verified:false },
-  { name:'Alipate Tuicolo', party:'gov-ind', role:'MP', initials:'AT', votes2022: null, badges:['badge-incumbent'], fields:[{l:'Entry',v:'Sworn in February 2023 as FijiFirst replacement MP for Dr Mahendra Reddy, who resigned from Parliament'},{l:'Career',v:'FijiFirst opposition MP 2023–2024; government-aligned independent after FijiFirst deregistration July 2024; no portfolio per parliament.gov.fj March 2026'}], verified:true },
-  { name:'Taito Rokomatu', party:'gov-ind', role:'MP', initials:'TR', votes2022: 489, badges:['badge-incumbent'], fields:[{l:'Career',v:'Former FijiFirst; government-aligned independent; no portfolio per parliament.gov.fj March 2026'},{l:'Note',v:'Entered Parliament to fill the vacant seat left by Dr Ifereimi Waqainabete, former Minister for Health, who resigned. Qualified after former Deputy Speaker Veena Bhatnagar, next in line, declined to serve. Sworn in September 2023. Serves on parliamentary standing committees with a focus on rural infrastructure and development.'}], verified:true },
 
-  // ── PEOPLE FIRST / OPPOSITION (15) — former FijiFirst ───────────────────────
+  // PEOPLE FIRST / OPPOSITION (20) — rightmost
   { name:'Inia Seruiratu', party:'people-first', role:'Leader of the Opposition; People First', initials:'IS', votes2022: 1221, badges:['badge-opp-leader'], fields:[{l:'Career',v:'Former RFMF officer; FijiFirst MP; Minister for Agriculture; Leader of Opposition 2022–present; leading People First rebranded from former FijiFirst MPs'}], verified:true },
-  { name:'Jone Usamate', party:'people-first', role:'Opposition MP', initials:'JU', votes2022: 975, badges:['badge-incumbent'], fields:[{l:'Career',v:'Former FijiFirst Minister for Infrastructure; opposition MP'}], verified:true },
-  { name:'Semi Koroilavesau', party:'people-first', role:'Opposition MP; People First party leader', initials:'SK', votes2022: 855, badges:['badge-incumbent'], fields:[{l:'Career',v:'Former Navy officer; FijiFirst MP 2022; People First party leader (registered January 2026)'}], verified:true },
   { name:'Premila Kumar', party:'people-first', role:'Opposition MP; People First', initials:'PK', votes2022: 1025, badges:['badge-incumbent'], fields:[{l:'Education',v:'Mahatma Gandhi Memorial High School; BSc Sophia College for Women, India'},{l:'Career',v:'Teacher; FijiFirst MP; People First'},{l:'Vuda',v:'Raised incinerator proposal in Parliament questioning why Fiji would proceed with project rejected in Western Sydney'}], verified:true },
+  { name:'Aiyaz Sayed-Khaiyum', party:'people-first', role:'Former AG; Opposition MP', initials:'AK', votes2022: 22524, badges:['badge-incumbent'], fields:[{l:'Career',v:'Attorney-General under Bainimarama regime 2007–2022; FijiFirst General Secretary; architect of 2013 Constitution; now opposition MP'},{l:'Legal',v:'Multiple ongoing FICAC investigations'}], verified:true },
+
+
   { name:'Faiyaz Koya', party:'people-first', role:'Opposition MP', initials:'FK', votes2022: 1071, badges:['badge-incumbent'], fields:[{l:'Career',v:'Former FijiFirst Minister for Trade; opposition MP'}], verified:true },
+
   { name:'Hem Chand', party:'people-first', role:'Opposition MP', initials:'HC', votes2022: 2324, badges:['badge-incumbent'], fields:[{l:'Career',v:'Former FijiFirst; opposition MP'}], verified:true },
-  { name:'Parveen Bala', party:'people-first', role:'Opposition MP', initials:'PB', votes2022: 3604, badges:['badge-incumbent'], fields:[{l:'Career',v:'Former FijiFirst; People First contributor; opposition MP'}], verified:true },
+  { name:'Parveen Bala', party:'people-first', role:'Opposition MP', initials:'PB', votes2022: 3604, badges:['badge-incumbent'], fields:[{l:'Career',v:'Former FijiFirst; opposition MP'}], verified:true },
+  { name:'Rinesh Sharma', party:'bloc16', role:'MP — Cross-bench (former People First)', initials:'RS', votes2022: 1705, badges:['badge-incumbent'], fields:[{l:'Education',v:'BSc Computer Science and Engineering, Sri Venkateswara College of Engineering and Technology, India (2018)'},{l:'Career',v:'Software engineer; founded Smarts Fiji (hydroponics farming) 2018; FijiFirst MP 2022; Deputy Chair, Foreign Affairs Committee; independent after FijiFirst deregistration 2024'},{l:'Notable',v:'March 2025 — voted with government on Constitution Amendment Bill motion alongside Kumar, Kirpal and Nand. Cross-bench breakaway from People First bloc.'}], verified:true },
   { name:'Alvick Maharaj', party:'people-first', role:'Opposition MP', initials:'AM', votes2022: 1573, badges:['badge-incumbent'], fields:[{l:'Career',v:'Former FijiFirst; opposition MP'}], verified:true },
-  { name:'Vijay Nath', party:'people-first', role:'Opposition MP', initials:'VN', votes2022: 1435, badges:['badge-incumbent'], fields:[{l:'Career',v:'Former FijiFirst; People First contributor; opposition MP'}], verified:true },
+  { name:'Vijay Nath', party:'people-first', role:'Opposition MP', initials:'VN', votes2022: 1435, badges:['badge-incumbent'], fields:[{l:'Career',v:'Former FijiFirst; opposition MP'}], verified:true },
+  { name:'Shalen Kumar', party:'bloc16', role:'MP — Cross-bench (former People First)', initials:'SK', votes2022: 1088, badges:['badge-incumbent'], fields:[{l:'Career',v:'Former FijiFirst; opposition MP'},{l:'Notable',v:'March 2025 — voted with government on Constitution Amendment Bill motion alongside Kirpal, Sharma and Nand. Cross-bench breakaway from People First bloc.'}], verified:true },
+  { name:'Jone Usamate', party:'people-first', role:'Opposition MP', initials:'JU', votes2022: 975, badges:['badge-incumbent'], fields:[{l:'Career',v:'Former FijiFirst Minister for Infrastructure; opposition MP'}], verified:true },
   { name:'Viam Pillay', party:'people-first', role:'Opposition MP', initials:'VP', votes2022: 971, badges:['badge-incumbent'], fields:[{l:'Career',v:'Former FijiFirst; opposition MP'}], verified:true },
-  { name:'Joseph Nand', party:'people-first', role:'Opposition MP', initials:'JN', votes2022: 928, badges:['badge-incumbent'], fields:[{l:'Career',v:'Former FijiFirst; People First contributor; opposition MP'}], verified:true },
-  { name:'Rinesh Sharma', party:'people-first', role:'Opposition MP', initials:'RS', votes2022: 1705, badges:['badge-incumbent'], fields:[{l:'Education',v:'BSc Computer Science and Engineering, Sri Venkateswara College of Engineering and Technology, India (2018)'},{l:'Career',v:'Software engineer; founded Smarts Fiji (hydroponics farming) 2018; FijiFirst MP 2022; Deputy Chair, Foreign Affairs Committee; independent after FijiFirst deregistration 2024; opposition MP per parliament.gov.fj March 2026'},{l:'Notable',v:'March 2025 — voted with government on Constitution Amendment Bill motion. Parliament.gov.fj confirms he remains on the opposition side.'}], verified:true },
-  { name:'Sanjay Kirpal', party:'people-first', role:'Opposition MP', initials:'SK', votes2022: 941, badges:['badge-incumbent'], fields:[{l:'Career',v:'Former FijiFirst; opposition MP per parliament.gov.fj March 2026'},{l:'Notable',v:'March 2025 — voted with government on Constitution Amendment Bill motion alongside Shalen Kumar, Rinesh Sharma and Sachida Nand. Remains in opposition per official parliament listing.'}], verified:true },
-  { name:'Virendra Lal', party:'people-first', role:'Opposition MP; People First', initials:'VL', votes2022: null, badges:['badge-incumbent'], fields:[{l:'Entry',v:'Appointed to Parliament December 2020 to fill the seat vacated by Vijendra Prakash (FijiFirst), who resigned. Re-elected under FijiFirst in the 2022 general election.'},{l:'Career',v:'FijiFirst MP 2020–2024; one of the 17 MPs sacked by FijiFirst in May 2024 for voting for parliamentary salary increases against party directive; declared he would remain independent after FijiFirst deregistration July 2024; now People First opposition MP'},{l:'PRF',v:'Backed PRF ratification in Parliament April 2026, stating the facility would strengthen Pacific-led resilience and self-determination without exposing Fiji to financial liability'}], verified:true },
+  { name:'Sanjay Kirpal', party:'bloc16', role:'MP — Cross-bench (former People First)', initials:'SK', votes2022: 941, badges:['badge-incumbent'], fields:[{l:'Career',v:'Former FijiFirst; opposition MP'},{l:'Notable',v:'March 2025 — voted with government on Constitution Amendment Bill motion alongside Shalen Kumar, Rinesh Sharma and Sachida Nand.'}], verified:true },
+  { name:'Joseph Nand', party:'people-first', role:'Opposition MP', initials:'JN', votes2022: 928, badges:['badge-incumbent'], fields:[{l:'Career',v:'Former FijiFirst; opposition MP'}], verified:true },
+  { name:'Sachida Nand', party:'bloc16', role:'MP — Cross-bench; formally withdrawn from opposition', initials:'SN', votes2022: 530, badges:['badge-incumbent'], fields:[{l:'Career',v:'Former FijiFirst candidate 2022; entered Parliament as replacement MP following vacancies'},{l:'Notable',v:'March 2025 — voted with government on Constitution Amendment Bill motion alongside Kirpal, Kumar and Sharma. Subsequently formally notified the Speaker of his withdrawal of support from the Leader of the Opposition. Now aligned with the Group of 11 Bloc under Naivalurua.'}], verified:true },
+  { name:'Semi Koroilavesau', party:'people-first', role:'Opposition MP', initials:'SK', votes2022: 855, badges:['badge-incumbent'], fields:[{l:'Career',v:'Former FijiFirst; opposition MP'}], verified:true },
   { name:'Ketan Kirit Lal', party:'people-first', role:'Opposition MP', initials:'KL', votes2022: 617, badges:['badge-incumbent'], fields:[{l:'Career',v:'Former FijiFirst; opposition MP. Lowest personal vote among FijiFirst MPs elected in 2022.'}], verified:true },
 
 ];
 
+// Calculate hemicycle seat positions
 function calcSeats() {
   const cx = 400, cy = 410;
   const rows = [
@@ -350,6 +372,10 @@ function renderSeats() {
   const positions = calcSeats();
   const g = document.getElementById('seats-group');
   g.innerHTML = '';
+
+  // Assign MPs to positions — fill row by row left to right
+  // Reorder mps so they fill nicely: gov on left, opp on right
+  // Use the mps array order which goes PA→NFP→SODELPA→GovInd→PeopleFirst
 
   positions.forEach((pos, i) => {
     const mp = mps[i] || { name:'Vacant / Pending', party:'vacant', role:'Seat status pending verification', initials:'—', votes2022: null, badges:[], fields:[{l:'Note',v:'Seat vacant or status pending verification. Check parliament.gov.fj for current information.'}], verified:false };
@@ -380,6 +406,7 @@ function renderSeats() {
 
     seat.appendChild(circle);
     seat.appendChild(text);
+
     seat.addEventListener('click', () => showProfile(i, mp));
     g.appendChild(seat);
   });
@@ -389,7 +416,9 @@ let selectedIndex = -1;
 let activeFilter = 'all';
 
 function showProfile(index, mp) {
+  // Deselect previous
   document.querySelectorAll('.seat').forEach(s => s.classList.remove('selected'));
+  // Select current
   document.querySelector(`[data-index="${index}"]`)?.classList.add('selected');
   selectedIndex = index;
 
@@ -419,6 +448,7 @@ function showProfile(index, mp) {
   const fieldsEl = document.getElementById('profile-fields');
   let fieldsHTML = '';
   if (mp.votes2022) {
+    const color = colors[mp.party] || '#888';
     fieldsHTML += `<div class="profile-field"><span class="field-label">2022 vote</span><span class="field-value" style="font-weight:600;color:${color}">${mp.votes2022.toLocaleString()} votes <span style="font-weight:400;color:var(--mid-grey);font-size:0.72rem;">— official FEO data</span></span></div>`;
   }
   fieldsHTML += mp.fields.map(f =>
